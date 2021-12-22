@@ -8,7 +8,7 @@ load network.mat;
 [file,path] = uigetfile({'*.jpg'; '*.png'}, 'PILIH GAMBAR');
 
 %% PENG HISTO
-
+tStart = tic;
 I=imread([path, file]);
 [X,Y]=size(I(:,:,1));
 
@@ -19,7 +19,7 @@ crop = I(cX-floor(X/4):cX+floor(X/4), cY-floor(Y/4) : cY+floor(Y/4),:);
 crop_hsv=rgb2hsv(crop);
 
 [N,M,L]=size(crop);
-Hk = 12; Ck = 5; Lk = 5;
+Hk = 12; Ck = 4; Lk = 4;
 HCL_Histo(1:Hk, 1:Ck+1, 1:Lk) = 0;
 gamma = 1;
 Q = exp(gamma/100.0);
@@ -68,7 +68,7 @@ elseif(uint8(YPred) == 2)
 %elseif(uint8(YPred) == 3)
     
 end
-
+tEnd = toc(tStart)
 %% DISPLAY OUTPUT
 figure('Name', 'Result', 'Position', [400 400 800 400])
 subplot(1,3,1);
@@ -81,4 +81,5 @@ title('Cropped');
 
 subplot(1,3,3);
 text(0,0.5,['Class Prediction : ', char(YPred),' (', strPred, ')']);
+text(0,1,['Computation Time : ', tEnd]);
 set(gca,'Visible','off')
